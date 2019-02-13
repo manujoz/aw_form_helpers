@@ -30,7 +30,12 @@ class AwCharCounter extends PolymerElement {
         </style>
         <slot></slot>
 		`;
-	}
+    }
+    
+    connectedCallback() {
+        super.connectedCallback();
+        this.removeAttribute( "unresolved" );
+    }
 }
 
 window.customElements.define( "aw-char-counter", AwCharCounter );

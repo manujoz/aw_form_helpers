@@ -83,7 +83,7 @@ class AwInputDatalist extends PolymerElement {
 
             .arr-datalist {
                 position: absolute;
-                top: -28px;
+                top: var(--aw-input-datalist-arrow-top,-27px);
                 right: 0px;
                 background-color: var(--aw-input-datalist-arrow-background-color, transparent);
                 cursor: pointer;
@@ -211,11 +211,12 @@ class AwInputDatalist extends PolymerElement {
 		
 		// Creamos las opciones.
 
+		let options = this.datalist.querySelectorAll( "option" );
 		this.options = [];
 
-		for( let i = 0; i < this.datalist.options.length; i++ ) {
-			let inner = this.datalist.options[ i ].innerHTML;
-			let value = this.datalist.options[ i ].value;
+		for( let i = 0; i < options.length; i++ ) {
+			let inner = options[ i ].innerHTML;
+			let value = options[ i ].value;
 			let valueShow = ( this.dlshwovalue ) ? value : "";
 
 			if ( inner === "" ) {
@@ -272,8 +273,18 @@ class AwInputDatalist extends PolymerElement {
 	 * Ajusta la posición del datalist sobre el input.
 	 */
 	_position_datalist() {
-		var top = this.input.offsetTop + this.input.offsetHeight - 1;
+		let div_container = this.input.parentElement;
+		let cont = 0;
+		while( div_container.id !== "container" || !div_container.classList.contains( "container" ) ) {
+			if( cont == 5 ) {
+				break;
+			}
 
+			div_container = div_container.parentElement;
+			cont++;
+		}
+		
+		let top = div_container.offsetTop + this.input.offsetHeight - 1;
 		this.style.top = top + "px";
 	}
 

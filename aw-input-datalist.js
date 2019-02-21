@@ -9,7 +9,7 @@ class AwInputDatalist extends PolymerElement {
             :host {
                 position: absolute;
 				left: 0px;
-				top: 0;
+				top: calc(100% - 1px);
                 width: 100%;
                 display: block;
                 z-index: 10;
@@ -242,7 +242,7 @@ class AwInputDatalist extends PolymerElement {
 
 			prov.appendChild( clon );
 
-			divOpts.parentElement.appendChild( prov );
+			document.body.appendChild( prov );
 
 			// Ancho del span
 
@@ -254,7 +254,7 @@ class AwInputDatalist extends PolymerElement {
 
 			// Asignamos el ancho y el alto
 
-			this.width = clon.offsetWidth + widthSpan + 10;
+			this.width = clon.offsetWidth + widthSpan + 30;
 			this.height = clon.offsetHeight;
 
 			divOpts.style.width = this.width + "px";
@@ -262,7 +262,7 @@ class AwInputDatalist extends PolymerElement {
 			// Eliminamos el elemento provisional
 
 			if( prov.parentNode ) {
-				divOpts.parentElement.removeChild( prov );
+				document.body.removeChild( prov );
 			}
 		}, 500);
 	}
@@ -273,7 +273,8 @@ class AwInputDatalist extends PolymerElement {
 	 * Ajusta la posición del datalist sobre el input.
 	 */
 	_position_datalist() {
-		let div_container = this.input.parentElement;
+		/*let div_container = this.input.parentElement;
+		
 		let cont = 0;
 		while( div_container.id !== "container" || !div_container.classList.contains( "container" ) ) {
 			if( cont == 5 ) {
@@ -285,7 +286,7 @@ class AwInputDatalist extends PolymerElement {
 		}
 		
 		let top = div_container.offsetTop + this.input.offsetHeight - 1;
-		this.style.top = top + "px";
+		this.style.top = top + "px";*/
 	}
 
 	/**

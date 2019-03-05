@@ -12,7 +12,7 @@ class AwCharCounter extends PolymerElement {
                 right: var(--aw-countchar-counter-right,auto);
                 padding: var(--aw-countchar-counter-padding,0);
                 margin: var(--aw-countchar-counter-margin,0);
-                color: var(--aw-countchar-color,var(--aw-primary-color,var(--aw-input-label-color,#888888)));
+                color: var(--aw-countchar-color,var(--aw-input-label-color,#888888));
                 font-family: var(--aw-countchar-font-family,var(--aw-input-font-family,"arial"));
                 font-weight: var(--aw-countchar-font-weight,var(--aw-input-font-weight, normal));
                 font-size: var(--aw-countchar-font-size,12px);

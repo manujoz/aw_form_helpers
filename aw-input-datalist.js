@@ -26,14 +26,15 @@ class AwInputDatalist extends PolymerElement {
 			}
 
             #datalist {
-                position: absolute;
+				position: fixed;
 				color: var(--aw-input-datalist-color,var(--aw-input-color, #333333));
                 background-color: var(--aw-input-datalist-background-color, white);
                 box-shadow: var(--aw-input-datalist-box-shadow,0px 1px 3px #777777);
 				overflow-x: auto;
-				max-height: 250px;
-				transition: margin .1s, height .2s, width .1s;
+				max-height: 300px;
+				transition: height .2s;
 				display: none;
+				z-index: 10000;
             }
             #datalist::-webkit-scrollbar {
                 width: 7px;
@@ -170,6 +171,8 @@ class AwInputDatalist extends PolymerElement {
 		// Posicionamos el datalist
 		
 		this._position_datalist();
+
+		this.listenScroll = this._scroll_event.bind( this );
 	}
 
 	/**
@@ -306,7 +309,7 @@ class AwInputDatalist extends PolymerElement {
 
 			// Guardamos el scroll top
 
-			this.scrolltop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+			this._set_scrolltop();
 
 			// Mostramos las opciones
 
@@ -315,6 +318,10 @@ class AwInputDatalist extends PolymerElement {
 			// Posicionamos las opciones
 
 			this._position_options();
+
+			// Evita el scroll de la pantalla
+
+			window.addEventListener( "scroll", this.listenScroll);
 		}
 	}
 
@@ -327,6 +334,8 @@ class AwInputDatalist extends PolymerElement {
 		if( this.dlvisible ) {
 			this.dlvisible = false;
 			this.$.datalist.style.display = "none";
+
+			window.removeEventListener( "scroll", this.listenScroll);
 		}
 	}
 
@@ -408,6 +417,22 @@ class AwInputDatalist extends PolymerElement {
 	}
 
 	/**
+	 * @method	_set_scrolltop
+	 * 
+	 * Asigna el scrolltop teniendo en cuenta el scrolltop de la ventana así como
+	 * el scrolltop de los padres si tienen algún tipo de overflow.
+	 */
+	_set_scrolltop() {
+		this.scrolltop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+
+		var parent = this.datalist.parentElement;
+		while( parent.tagName !== "BODY" ) {
+			this.scrolltop += parent.scrollTop;
+			parent = parent.parentElement;
+		}
+	}
+
+	/**
 	 * @method	_slide_element
 	 * 
 	 * Despliega las opciones con un efecto de persiana.
@@ -445,13 +470,22 @@ class AwInputDatalist extends PolymerElement {
 	_position_options() {
 		var options = this.$.datalist;
 		var position = this.getBoundingClientRect();
-		
-		if( position.top + this.height > window.innerHeight - 20 && window.innerHeight > 400 ) {
-			let diff = this.input.offsetHeight + this.height + 2;
-			options.style.marginTop = "-" + diff + "px";
+
+		options.style.marginTop = "-" + this.scrolltop + "px";
+
+		if( position.top + options.offsetHeight > this.scrolltop ) {
+			var input = this.datalist.parentElement.inputElement;
+
+			var h = ( this.height > 300 ) ? 300 : this.height;
+			if( options.offsetHeight > 0 ) {
+				h = options.offsetHeight;
+			}
+
+			options.style.marginTop = "-" + ( this.scrolltop + input.offsetHeight + h ) + "px";
 		}
 
 		if( this.width > window.innerWidth - 40 ) {
+			options.style.marginLeft = "-" + ( position.left - 10 ) + "px";
 			options.style.width = window.innerWidth - 40 + "px";
 		}
 	}
@@ -486,6 +520,12 @@ class AwInputDatalist extends PolymerElement {
 	_keyup( ev ) {
 		this.string = this.input.value;
 
+		// Ajustamos posición
+
+		setTimeout(() => {
+			this._position_options();
+		}, 10);
+
 		// Al pulsar enter
 
 		if( ev.keyCode === 13 ) {
@@ -506,6 +546,17 @@ class AwInputDatalist extends PolymerElement {
 		if ( ev.keyCode === 38 && this.dlvisible ) {
 			this._preview();
 		}
+	}
+
+	/**
+	 * @method	_scroll_event
+	 * 
+	 * Evita el scroll de la página cuando están abiertas las opciones.
+	 * 
+	 * @param	{object}		ev			Evento devuelto en el listener
+	 */
+	_scroll_event( ev ) {
+		window.scroll( 0, this.scrolltop );
 	}
 }
 

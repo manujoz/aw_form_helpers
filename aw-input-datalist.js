@@ -334,6 +334,7 @@ class AwInputDatalist extends PolymerElement {
 		if( this.dlvisible ) {
 			this.dlvisible = false;
 			this.$.datalist.style.display = "none";
+			this.$.datalist.removeAttribute( "top" );
 
 			window.removeEventListener( "scroll", this.listenScroll);
 		}
@@ -468,12 +469,37 @@ class AwInputDatalist extends PolymerElement {
 	 * @param	{object}		ev			Evento devuelto en el listener
 	 */
 	_position_options() {
+		console.log( "OPTS" );
 		var options = this.$.datalist;
 		var position = this.getBoundingClientRect();
 
+		// Ponemos la posición abajo por defecto.
+
 		options.style.marginTop = "-" + this.scrolltop + "px";
 
-		if( position.top + options.offsetHeight > this.scrolltop ) {
+		// Obtenemos la posición de las opciones.
+
+		var optspos = options.getBoundingClientRect();
+
+		// Cogemos el input y el alto de las opciones.
+
+		var input = this.datalist.parentElement.inputElement;
+		var h = ( this.height > 300 ) ? 300 : this.height;
+
+		// Asignamos la altura si hay altura de las opciones.
+
+		if( options.offsetHeight > 0 ) {
+			h = options.offsetHeight;
+		}
+		
+		// Posicionamos las opciones arriba si corresponde.
+
+		if( optspos.top + h > window.innerHeight || options.hasAttribute( "top" )) {
+			options.setAttribute( "top", "" );
+			options.style.marginTop = "-" + ( this.scrolltop + input.offsetHeight + h ) + "px";
+		}
+
+		/*if( position.top + options.offsetHeight > this.scrolltop + window.innerHeight ) {
 			var input = this.datalist.parentElement.inputElement;
 
 			var h = ( this.height > 300 ) ? 300 : this.height;
@@ -482,11 +508,21 @@ class AwInputDatalist extends PolymerElement {
 			}
 
 			options.style.marginTop = "-" + ( this.scrolltop + input.offsetHeight + h ) + "px";
-		}
+		}*/
+
+		// Ajustamos el ancho de las opciones.
 
 		if( this.width > window.innerWidth - 40 ) {
 			options.style.marginLeft = "-" + ( position.left - 10 ) + "px";
 			options.style.width = window.innerWidth - 40 + "px";
+		}
+
+		// Si no hay altura y tiene el atributo top, volvemos a llamar a la función.
+		
+		if( options.offsetHeight == 0 && options.hasAttribute( "top" )) {
+			setTimeout(() => {
+				this._position_options();
+			}, 200);
 		}
 	}
 
@@ -524,7 +560,7 @@ class AwInputDatalist extends PolymerElement {
 
 		setTimeout(() => {
 			this._position_options();
-		}, 10);
+		}, 20);
 
 		// Al pulsar enter
 

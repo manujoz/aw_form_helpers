@@ -469,7 +469,6 @@ class AwInputDatalist extends PolymerElement {
 	 * @param	{object}		ev			Evento devuelto en el listener
 	 */
 	_position_options() {
-		console.log( "OPTS" );
 		var options = this.$.datalist;
 		var position = this.getBoundingClientRect();
 

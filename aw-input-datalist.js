@@ -537,11 +537,22 @@ class AwInputDatalist extends PolymerElement {
 		if ( !string ) {
 			return null;
 		} else {
-			string = string.toLowerCase();
+			var replace = ( string ) => {
+				var result = string.replace( new RegExp( "(à|á|ä|â)", "g" ), "a" );
+				result = result.replace( new RegExp( "(è|á|ë|ê)", "g" ), "e" );
+				result = result.replace( new RegExp( "(ì|í|ï|î)", "g" ), "i" );
+				result = result.replace( new RegExp( "(ò|ó|ö|ô)", "g" ), "o" );
+				result = result.replace( new RegExp( "(ù|ú|ü|û)", "g" ), "u" );
+	
+				return result;
+			}
 
-			return function( option ) {
-				var value = option.value.toLowerCase();
-				var inner = option.inner.toLowerCase();
+			string = replace( string.toLowerCase());
+
+			return ( option ) => {
+				var value = replace( option.value.toLowerCase());
+				var inner = replace( option.inner.toLowerCase());
+				
 				return (value.indexOf( string ) != -1 || inner.indexOf(string) != -1);
 			}
 		}

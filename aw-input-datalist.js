@@ -260,7 +260,8 @@ class AwInputDatalist extends PolymerElement {
 			this.width = clon.offsetWidth + widthSpan + 30;
 			this.height = clon.offsetHeight;
 
-			divOpts.style.width = this.width + "px";
+			//divOpts.style.width = this.width + "px";
+			divOpts.style.width = this.parentElement.offsetWidth + "px";
 
 			// Eliminamos el elemento provisional
 

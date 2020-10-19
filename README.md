@@ -358,9 +358,10 @@ Los estilos que puede tener el mensaje de error se regulan con las siguientes va
 ______________________________
 
 <p style="text-align: center; padding: 50px 0">
-    <b>Contacto</b><br><br>Manu J. Overa<br><a href="mailto:manu.overa@arismanwebs.es">manu.overa@arismanwebs.es</a><br><br>
-    Diseño Web - <a href="https://arismanwebs.es">Arisman Webs</a>
+    <b>Contacto</b><br><br>Manu J. Overa<br><a href="mailto:manu.giralda@gmail.com">manu.giralda@gmail.com</a><br><br>
+    <!-- Diseño Web - <a href="https://arismanwebs.es">Arisman Webs</a> -->
 </p>
+
 
 
 

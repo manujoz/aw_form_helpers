@@ -94,6 +94,8 @@ class AwInputDatalist extends PolymerElement {
                 background-color: var(--aw-input-datalist-arrow-background-color-hover, transparent);
             }
             .iron-icon {
+				width: var(--aw-input-datalist-arrow-size,24px);
+				height: var(--aw-input-datalist-arrow-size,24px);
                 fill: var(--aw-input-datalist-arrow-color, #999999);
                 transition: all .2s;
             }

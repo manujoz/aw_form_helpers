@@ -1,4 +1,4 @@
-import { PolymerElement, html } from "/node_modules/aw_polymer_3/polymer/polymer-element.js";
+import { PolymerElement, html } from "../aw_polymer_3/polymer/polymer-element.js";
 
 class AwInputError extends PolymerElement {
 	static get template() {

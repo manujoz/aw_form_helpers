@@ -1,6 +1,6 @@
-import { PolymerElement, html } 		from "/node_modules/aw_polymer_3/polymer/polymer-element.js";
+import { PolymerElement, html } from "../aw_polymer_3/polymer/polymer-element.js";
 
-import "/node_modules/aw_polymer_3/iron-icons/iron-icons.js";
+import "../aw_polymer_3/iron-icons/iron-icons.js";
 
 class AwInputDatalist extends PolymerElement {
 	static get template() {
